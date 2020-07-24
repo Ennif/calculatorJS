@@ -78,9 +78,57 @@ class CalcController{
            
         }
 
+        pushOperator(value){
+
+            this._operation.push(value);
+          
+            if (this._operation.length > 3 ){
+
+                console.log(this._operation);
+
+                
+
+                this.calc();
+
+            }
+
+        }
+
+        calc (){
+            let last = this._operation.pop()
+            let result = eval(this._operation.join(""))
+
+            if (last == '%'){
+
+                result = result / 100;
+                this._operation =[result]
+
+            }else{
+
+                
+                this._operation = [result, last];
+
+            }
+
+           
+            this.setLastNumberToDisplay();
+        }
+
+        setLastNumberToDisplay(){
+
+            let lastNumber;
+            
+            for (let i = this._operation.length - 1 ; i >=0; i--)
+            
+            if (!this.isOperation(this._operation[i])){
+                lastNumber = this._operation[i]
+                break;
+            }
+            this.displayCalc = lastNumber
+        }
+
         addOperation(value){
 
-            console.log('A',this.getLastOperation() )
             
             if(isNaN(this.getLastOperation())){
                 
@@ -90,12 +138,26 @@ class CalcController{
                     
                     console.log(value)
                 }else {
-                    this._operation.push(value) 
+                    this.pushOperator(value) 
+                    this.setLastNumberToDisplay()
                 }
 
             }else {
-                let newValue = this.getLastOperation().toString() + value.toString()
-                this.setLastOperation(parseInt(newValue))
+
+                if (this.isOperation(value)){
+
+                    this.pushOperator(value)
+
+                }else{
+
+                    let newValue = this.getLastOperation().toString() + value.toString()
+                    this.setLastOperation(parseInt(newValue))
+
+                    this.setLastNumberToDisplay()
+
+                }
+
+                
             }
             
            
