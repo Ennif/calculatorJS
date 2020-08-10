@@ -62,10 +62,14 @@ class CalcController{
 
         clearAll(){
             this._operation = []
-            this.setLastNumberToDisplay();
+            this._lastNumber = '';
+            this._lastOperator = '';
+            this.setLastNumberToDisplay(0);
         }
         clearEntry(){
             this._operation.pop()
+            this._lastNumber = '';
+            this._lastOperator = '';
             this.setLastNumberToDisplay();
         }
 
@@ -211,7 +215,7 @@ class CalcController{
                 }else{
 
                     let newValue = this.getLastOperation().toString() + value.toString()
-                    this.setLastOperation(parseInt(newValue))
+                    this.setLastOperation(parseFloat(newValue))
 
                     this.setLastNumberToDisplay()
 
@@ -228,6 +232,20 @@ class CalcController{
             this.displayCalc = "ERROR 404"
         }
 
+        addDot(){
+
+            let lastOperation = this.getLastOperation();
+
+            if(this.isOperation(lastOperation) || !lastOperation){ 
+                this.pushOperator ('0.');
+
+            }else{
+               this.setLastOperation(lastOperation.toString() + '.') 
+            }
+            this.setLastNumberToDisplay();
+            console.log(lastOperation)
+
+        }
 
         execBtn(value){
             switch (value) {
@@ -257,7 +275,7 @@ class CalcController{
                     
                 break
                 case 'ponto':
-                    this.addOperation('.')
+                    this.addDot()
                 break
 
                 case '0':
