@@ -220,7 +220,7 @@ class CalcController{
             try {
                 return eval(this._operation.join(""));
             } catch (e) {
-                setTimeout(() => this.setError(), 1);
+                setTimeout(() =>{ this.setError()}, 1);
             }
     
         }
@@ -457,6 +457,10 @@ class CalcController{
     }
 
     set displayCalc(valor){
+        if(valor.toString().length > 10){
+            this.setError();
+            return;
+        }
         this._displayCalcEl.innerHTML = valor;
     }
 
